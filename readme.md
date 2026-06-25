@@ -251,4 +251,28 @@ Private S3 Bucket
 ✅ Better security
 ✅ Lower latency
 
-Under the hood when a user visits <api.example.com>
+Under the hood when a user visits <api.example.com>. Cloudfront receives the request, If the object is cached:
+
+```
+Edge Cache
+    │
+    ▼
+Return index.html
+```
+
+If it isn't cached: 
+
+```
+CloudFront
+     │
+Signed SigV4 Request
+     │
+Private S3 Bucket
+```
+
+S3 verifies: "Is this request coming from my CloudFront distribution?" If yes: Return index.html.
+If no: 403 Access Denied. This is exactly why we use Origin Access Control (OAC).
+
+## Step 6 : Open CloudFront
+
+
