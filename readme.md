@@ -275,4 +275,44 @@ If no: 403 Access Denied. This is exactly why we use Origin Access Control (OAC)
 
 ## Step 6 : Open CloudFront
 
+- AWS Console - CloudFront - Create Distribution
+- Enter Distribution name
+- Select Distribution type : Single website or app - Next
+- Origin Type - Amazon S3
+- Origin - S3 origin - Browse S3 - Select S3 bucket
+- Settings - Select Allow private S3 bucket access to CloudFront
+- Keep origin settings as default - Next
+- Enable Security - Select Do not enable security protections - Next
+- Review & create - Create Distribution
+- Select the create Distribution - General - Alternate domain names - Add Domain
+- Edit - Custom SSL certificate - Select the created certificate
+- Supported HTTP versions - HTTP/2
+- Default root object - optional - index.html
+- Connectivity - Price class - Use all edge locations (best performance)
+- Select Use cache tags for cache invalidation - Save changes
+- Origin - Select origin name
+- Origin access - Origin access control settings (recommended)
+- Origin access control - Copy policy - Go to S3 bucket permissions
+- Paste the policy & save
+- Enable origin shield - Yes - Save changes
 
+### Interview Perspective
+
+*Why use CloudFront with a private S3 bucket instead of enabling S3 Static Website Hosting?*
+
+S3 Static Website Hosting requires a public bucket. By placing CloudFront in front of a private S3 bucket and using Origin Access Control (OAC), only CloudFront can access the bucket. 
+This prevents users from bypassing the CDN, enforces HTTPS, improves caching and latency, and aligns with AWS security best practices.
+
+## Step 7 : Connect Route 53 to CloudFront
+
+- AWS Console - Route 53 - Hosted Zones
+- Select created hosted zone - Create record
+- Configure record as below:
+- Record Name - Blank
+- Record Type - A - IPv4 address
+- Alias - Yes
+- Route traffic to - Alias to CloudFront distribution
+- Choose Distribution - Select created distribution
+- Routing Policy - Simple
+- Evaluate Target Health - No
+- Then click - Create record
